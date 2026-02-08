@@ -1,0 +1,13 @@
+digraph LungMass {
+
+    rankdir=LR;
+    node [shape=box];
+
+		US [label="Antenatal US"];
+    Mass [label="Lung Mass in Utero"];
+    USDetails [label="Size (CVR)\lCharacteristics (CPAM vs CLO)\lMediastinal shift\lEversion of diaphragm\lVolume of  lung\l"];
+		
+		US -> Mass;
+    Mass -> USDetails;
+
+}
