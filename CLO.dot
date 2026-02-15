@@ -1,13 +1,71 @@
 digraph LungMass {
 
-    rankdir=LR;
-    node [shape=box];
+rankdir=TB;
+compound=true;
 
-		US [label="Antenatal US"];
-    Mass [label="Lung Mass in Utero"];
-    USDetails [label="Size (CVR)\lCharacteristics (CPAM vs CLO)\lMediastinal shift\lEversion of diaphragm\lVolume of  lung\l"];
-		
-		US -> Mass;
-    Mass -> USDetails;
+
+US [label="Antenatal US"];
+TransitionRisk [label="- Homogeneous (CLO)\l- Marked mediastinal shift\l- Eversion of diaphragm\l- Small unaffected lung\l"];
+CVRTrend [label="Follow CVR trend\l"];
+GoodTrend [label="Good CVR trend\l"];
+BadTrend [label="Bad CVR trend\l"];
+MRI [label="MRI"];
+SevereHypoplasia [label="O/E TLV < 50%\l"];
+MildHypoplasia [label="(O/E TLV > 50%)\l"];
+
+US -> TransitionRisk;
+TransitionRisk -> MRI;
+TransitionRisk ->CVRTrend;
+MRI -> SevereHypoplasia;
+MRI -> MildHypoplasia;
+CVRTrend -> BadTrend;
+CVRTrend -> GoodTrend;
+BadTrend -> MRI;
+
+{ rank=same; GoodTrend; MRI; }
+{ rank=same; MildHypoplasia; SevereHypoplasia; }
+
+subgraph cluster_NRP {
+	label="NRP Pathway";
+	color=lightgrey;
+	anchor_NRP [style=invis, weight=100, constraint=true];
+	StandardDelivery [label="Deliver"]
+	NRP [label="NRP\l"];
+	anchor_NRP-> StandardDelivery[style=invis];
+	StandardDelivery -> NRP;
+
+}
+
+subgraph cluster_HFJV {
+	label="HFJV Pathway";
+	color=lightblue;
+	anchor_HFJV [style=invis, weight=100, constraint=true];
+	DeliverWithHFJVReady [label="Deliver with\lHFJV ready\l"];
+	HFJV [label="Establish FRC\land begin HFJV\l"];
+	anchor_HFJV -> DeliverWithHFJVReady[style=invis];
+	DeliverWithHFJVReady -> HFJV;
+}
+
+subgraph cluster_EXIT {
+	label="EXIT Pathway";
+	color=lightpink;
+	anchor_EXIT [style=invis, weight=100, constraint=true];
+	EXIT [label="EXIT\l"];
+	ECMO [label="ECMO\l"];
+	Grow [label="Grow lung\l"];
+	Wean [label="Wean\l"];
+	anchor_EXIT -> EXIT[style=invis];
+	EXIT -> ECMO;
+	ECMO -> Grow;
+	Grow -> Wean;
+}
+
+{ rank=anchor_NRP; anchor_HFJV; anchor_EXIT; }
+anchor_NRP -> anchor_HFJV -> anchor_EXIT [style=invis,weight=100];
+
+MildHypoplasia -> anchor_NRP;
+GoodTrend -> anchor_NRP;
+SevereHypoplasia -> anchor_HFJV;
+SevereHypoplasia -> anchor_EXIT;
 
 }
