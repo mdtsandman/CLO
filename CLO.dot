@@ -1,71 +1,43 @@
 digraph LungMass {
 
 rankdir=TB;
+newrank=true;
 compound=true;
 
+node [color=grey];
+edge [color=grey arrowhead=vee];
 
-US [label="Antenatal US"];
-TransitionRisk [label="- Homogeneous (CLO)\l- Marked mediastinal shift\l- Eversion of diaphragm\l- Small unaffected lung\l"];
-CVRTrend [label="Follow CVR trend\l"];
-GoodTrend [label="Good CVR trend\l"];
-BadTrend [label="Bad CVR trend\l"];
-MRI [label="MRI"];
-SevereHypoplasia [label="O/E TLV < 50%\l"];
-MildHypoplasia [label="(O/E TLV > 50%)\l"];
+US [label="Antenatal US" style=filled fillcolor=grey];
+HighRisk [shape=box label="HIGH Risk of Hypoplasia\n\n- Marked mediastinal shift\l- Eversion of diaphragm\l- Small unaffected lung\l"];
+LowRisk [shape=box label="LOW Risk of Hypoplasia\n\n- Mediastinal shift minor/absent\l- No eversion of diaphragm\l- Generous unaffected lung\l"];
+CVRTrend [label="Follow\nCVR trend" style=filled fillcolor=grey];
+GoodTrend [shape=box label="Reassuring"];
+BadTrend [shape=box label="Worrisome"];
+MRI [label="MRI" style=filled fillcolor=grey];
+SevereHypoplasia [shape=box label="O/E TLV < 50%\l"];
+MildHypoplasia [shape=box label="O/E TLV > 50%\l"];
+NRP [label="NRP" style=filled fontcolor=white fillcolor=darkseagreen color=darkseagreen];
+HFJV [label="HFJV" style=filled fontcolor=white fillcolor=orange2 color=orange2];
+EXIT [label="EXIT" style=filled fontcolor=white fillcolor=indianred color=indianred];
 
-US -> TransitionRisk;
-TransitionRisk -> MRI;
-TransitionRisk ->CVRTrend;
+US -> {HighRisk, LowRisk};
+HighRisk -> MRI;
+LowRisk ->CVRTrend;
 MRI -> SevereHypoplasia;
 MRI -> MildHypoplasia;
 CVRTrend -> BadTrend;
 CVRTrend -> GoodTrend;
 BadTrend -> MRI;
+GoodTrend -> NRP;
+MildHypoplasia -> NRP;
+SevereHypoplasia -> {HFJV, EXIT};
 
-{ rank=same; GoodTrend; MRI; }
+NRP -> HFJV -> EXIT [style=invis];
+
+{ rank=same; LowRisk; HighRisk; }
+{ rank=same; GoodTrend; BadTrend; }
 { rank=same; MildHypoplasia; SevereHypoplasia; }
-
-subgraph cluster_NRP {
-	label="NRP Pathway";
-	color=lightgrey;
-	anchor_NRP [style=invis, weight=100, constraint=true];
-	StandardDelivery [label="Deliver"]
-	NRP [label="NRP\l"];
-	anchor_NRP-> StandardDelivery[style=invis];
-	StandardDelivery -> NRP;
-
-}
-
-subgraph cluster_HFJV {
-	label="HFJV Pathway";
-	color=lightblue;
-	anchor_HFJV [style=invis, weight=100, constraint=true];
-	DeliverWithHFJVReady [label="Deliver with\lHFJV ready\l"];
-	HFJV [label="Establish FRC\land begin HFJV\l"];
-	anchor_HFJV -> DeliverWithHFJVReady[style=invis];
-	DeliverWithHFJVReady -> HFJV;
-}
-
-subgraph cluster_EXIT {
-	label="EXIT Pathway";
-	color=lightpink;
-	anchor_EXIT [style=invis, weight=100, constraint=true];
-	EXIT [label="EXIT\l"];
-	ECMO [label="ECMO\l"];
-	Grow [label="Grow lung\l"];
-	Wean [label="Wean\l"];
-	anchor_EXIT -> EXIT[style=invis];
-	EXIT -> ECMO;
-	ECMO -> Grow;
-	Grow -> Wean;
-}
-
-{ rank=anchor_NRP; anchor_HFJV; anchor_EXIT; }
-anchor_NRP -> anchor_HFJV -> anchor_EXIT [style=invis,weight=100];
-
-MildHypoplasia -> anchor_NRP;
-GoodTrend -> anchor_NRP;
-SevereHypoplasia -> anchor_HFJV;
-SevereHypoplasia -> anchor_EXIT;
+{ rank=same; LowRisk; HighRisk; }
+{ rank=same; NRP; HFJV; EXIT; }
 
 }

@@ -1,0 +1,95 @@
+digraph LungMass {
+
+newrank=true;
+rankdir=TB;
+compound=true;
+center=true;
+
+node [shape=none fixedsize=true width=3 height=0.75 fontsize=20];
+edge [arrowhead=vee];
+
+subgraph clusterNRP {
+
+	label=<
+		<TABLE CELLPADDING="12"><TR><TD><B>NRP</B></TD></TR></TABLE>
+	>;
+	fontsize=34;
+	fontcolor="white";
+	
+	color=darkseagreen;
+	bgcolor=darkseagreen;
+	
+	TopNRP [label="", shape=point, style=invis];
+	StandardDelivery [label="Deliver"];
+	NRP [label=<<B>NRP</B>>, width=1.2, fontsize=20, fontcolor="white"];
+	Delay [label="Grow baby\n(3-9 mo)" height=0.9];
+	VATS [label="Resection (VATS?)"];
+	BottomNRP [label="", shape=point, style=invis];
+	
+	TopNRP -> StandardDelivery[style=invis];
+	StandardDelivery -> NRP -> Delay -> VATS
+	VATS -> BottomNRP[style=invis];
+
+}
+
+subgraph clusterHFJV {
+
+	label=<
+		<TABLE CELLPADDING="12"><TR><TD><B>HFJV</B></TD></TR></TABLE>
+	>;
+	fontsize=34;
+	fontcolor="white";
+
+	color= orange2;
+	bgcolor= orange2;
+	
+	TopHFJV [label="", shape=point, style=invis];
+	Deliver [label="Deliver"];
+	FRC [label="Establish FRC"];
+	HFJV [label=<<B>HFJV</B>>, width=1.2, fontsize=20, fontcolor="white"];
+	Transition [label="Circulatory\nTransition\n(24-48 hrs)", height=1.3];
+	Resection [label="Resection"];
+	BottomHFJV [label="", shape=point, style=invis];
+	
+	TopHFJV -> Deliver[style=invis];
+	Deliver -> FRC -> HFJV -> Transition -> Resection;
+	Resection -> BottomHFJV[style=invis];
+
+}
+
+subgraph clusterEXIT {
+
+	label=<
+		<TABLE CELLPADDING="12"><TR><TD><B>EXIT</B></TD></TR></TABLE>
+	>;
+	fontsize=34;
+	fontcolor="white";
+	
+	color=indianred;
+	bgcolor=indianred;
+
+	TopEXIT [label="", shape=point, style=invis];
+	EXIT [label="EXIT to ECLS"];
+	ECMO [label=<<B>ECLS</B>>, width=1.2, fontsize=20, fontcolor=white];
+	Thoracotomy [label="Resection"];
+	Grow [label="Grow lung"];
+	Wean [label="Wean from\nECLS"];
+	BottomEXIT [label="", shape=point, style=invis];
+
+	TopEXIT -> EXIT[style=invis];
+	EXIT -> ECMO -> Thoracotomy -> Grow -> Wean;
+	Wean -> BottomEXIT[style=invis];
+
+}
+
+{ rank=same; TopNRP; TopHFJV; TopEXIT }
+TopNRP -> TopHFJV -> TopEXIT[style=invis];
+{ rank=same; StandardDelivery; Deliver; EXIT }
+{ rank=same; NRP; HFJV; ECMO };
+NRP -> HFJV -> ECMO [color=white];
+{ rank=same; Delay; Transition; Grow}
+{ rank=same; VATS; Resection; Wean }
+{ rank=same; BottomNRP; BottomHFJV; BottomEXIT }
+BottomNRP -> BottomHFJV -> BottomEXIT [style=invis];
+
+}
