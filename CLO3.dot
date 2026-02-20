@@ -8,6 +8,7 @@ node [color=grey style=filled fillcolor=grey];
 edge [color=grey];
 
 CLO [label="CLO"];
+PMS [label="Persistent\nMediastinal Shift"];
 CVP [label="Central Venous\nInsufficiency" style=filled fontcolor=white fillcolor=orange2 color=orange2];
 PHP [label="Pulmonary\nHypoplasia" style=filled fontcolor=white fillcolor=orange2 color=orange2];
 MaybeCLE [label="Risk\nof CLE" style=filled fontcolor=white fillcolor=orange2 color=orange2];
@@ -15,10 +16,11 @@ NIHF [label="Non-Immune\nHydrops\nFetalis"];
 IUD [label="Intrauterine\nDemise" style=filled fontcolor=white fillcolor=indianred color=indianred];
 CLE [label="CLE"];
 OR [label="OR"];
-Fear [label="Pressurephobia"];
+Fear [label="Fear of PPV"];
 Collapse [label="Atelectasis"];
 
-CLO -> {CVP, PHP, MaybeCLE};
+CLO -> PMS;
+PMS -> {CVP, PHP, MaybeCLE};
 CVP -> NIHF -> IUD;
 PHP -> PHTN;
 
@@ -27,13 +29,10 @@ MaybeCLE -> CLE[style=dashed];
 MaybeCLE -> Fear -> Collapse -> {Badness, PHTN};
 CLE -> {Badness OR};
 OR -> Badness;
-Badness -> OR;
 
 subgraph clusterFuck {
 
-	label=<
-		<TABLE CELLPADDING="12"><TR><TD><B>Loop of Doom</B></TD></TR></TABLE>
-	>;
+	label="Loop of Doom";
 	style=rounded;
 	fontsize=25;
 	fontcolor="white";
@@ -44,8 +43,8 @@ subgraph clusterFuck {
 	PHTN [label="Pulmonary\nHTN" style=filled fillcolor=white color=white];
 	Badness [label="Hypoxemia\n& Acidosis" style=filled fillcolor=white color=white];
 
-	PHTN -> Badness[color=white];
-	Badness -> PHTN[color=white];
+	PHTN -> Badness[color=white penwidth=3];
+	Badness -> PHTN[color=white penwidth=3];
 
 } //clusterFuck
 
