@@ -7,53 +7,55 @@ compound=true;
 node [color=grey style=filled fillcolor=grey];
 edge [color=grey];
 
-CLO [label="CLO" fontsize=24];
+CLM [label="CLM" fontsize=24];
 PMS [label="Persistent\nMediastinal Shift"];
-
 CVP [label="Central Venous\nInsufficiency" style=filled fillcolor=orange2 color=orange2];
 PHP [label="Pulmonary\nHypoplasia" style=filled fillcolor=orange2 color=orange2];
-MaybeCLE [label="Risk\nof CLE" style=filled fillcolor=orange2 color=orange2];
-
+MaybeCLE [label="Potential\nCLE" style=filled fillcolor=orange2 color=orange2];
 NIHF [label="Non-Immune\nHydrops\nFetalis"];
-IUD [label="Intrauterine\nDemise" style=filled fillcolor=indianred color=indianred];
-
-OR [label="OR" style=filled fontcolor=white fillcolor=black color=black];
-Fear [label="Fear of PPV" style=filled fontcolor=white fillcolor=black color=black];
-FRC [label="Low FRC" style=filled fontcolor=white fillcolor=black color=black];
+OR [label="OR"];
+Fear [label="Fear of PPV"];
+FRC [label="Low FRC"];
 CLE [label="CLE"];
-
-CLO -> {PMS MaybeCLE};
-PMS -> {CVP, PHP};
-CVP -> NIHF -> IUD;
-
-MaybeCLE -> {Fear OR} -> FRC;
-MaybeCLE -> CLE[style=dashed arrowhead=none];
-CLE -> Doom;
-
-{PHP OR FRC} -> Doom;
+IUD [label="Intrauterine\nDemise" style=filled fillcolor=indianred color=indianred];
+Catalyst [label="Gas on\nthe Flames" style=filled fillcolor=indianred color=indianred];
+Death [label="Death" style=filled fillcolor=indianred color=indianred];
 
 subgraph ClusterFuck {
 
 	style=rounded;
-	color=indianred;
-	bgcolor=indianred;
+	color=red;
+	fontcolor=red;
+	fontsize=24;
+	label="Dumpster Fire";
+	labelloc=b;
 
-	subgraph ClusterAnchor {
-		Doom [label="Loop of Doom" shape=box fontsize= 24 fontcolor=black style=filled fillcolor=indianred color=indianred];
-		PHTN [label="Pulmonary\nHTN" style=filled fontcolor=white fillcolor=black color=black];
-		Doom -> PHTN[style=invis weight=100];
-	}
-
+	PHTN [label="Pulmonary\nHTN" style=filled fontcolor=white fillcolor=black color=black];
 	Shunt [label="R-to-L\nShunt" style=filled fontcolor=white fillcolor=black color=black];
-	Badness [label="Hypoxemia\n& Acidosis" style=filled fontcolor=white fillcolor=black color=black];
+	Badness [label="Hypoxia\nHypoxemia\nAcidosis" style=filled fontcolor=white fillcolor=black color=black];
 
 	PHTN -> Shunt -> Badness -> PHTN[color=black];
 
-} //clusterFuck
+}
 
-{rank=same PHP CVP MaybeCLE};
-{rank=same NIHF FRC CLE};
-{rank=same IUD PHTN};
-{rank=same Shunt Badness};
+{rank=same CVP PHP MaybeCLE};
+{rank=same NIHF Fear OR};
+{rank=same IUD FRC CLE};
+{rank=same PHTN Catalyst};
+{rank=same Shunt Badness Death};
 
-} //Risks
+CLM -> PMS;
+PMS -> {CVP, PHP, MaybeCLE};
+CVP -> NIHF[arrowhead=none];
+NIHF -> IUD;
+MaybeCLE -> {Fear OR} -> FRC;
+MaybeCLE -> CLE[arrowhead=none];
+CLE -> Catalyst;
+PHP -> PHTN[weight=200]
+{OR FRC} -> Catalyst;
+CVP -> PHP -> MaybeCLE [style=invis];
+Fear -> OR [style=invis];
+FRC -> CLE [style=invis];
+Catalyst -> Death;
+
+}
