@@ -5,7 +5,7 @@ newrank=true;
 compound=true;
 
 node [color=grey style=filled fillcolor=grey];
-edge [color=grey];
+edge [arrowhead=vee];
 
 CLM [label="CLM" fontsize=24];
 PMS [label="Persistent\nMediastinal Shift"];
@@ -18,12 +18,13 @@ Fear [label="Fear of PPV"];
 FRC [label="Low FRC"];
 CLE [label="CLE"];
 IUD [label="Intrauterine\nDemise" style=filled fillcolor=indianred color=indianred];
-Catalyst [label="Gas on\nthe Flames" style=filled fillcolor=indianred color=indianred];
-Death [label="Death" style=filled fillcolor=indianred color=indianred];
+Catalyst [label="Gas on the\nDumpster\nFire" fontcolor=white style=filled fillcolor=red color=red];
+Death [label="Postnatal\nDemise" style=filled fillcolor=indianred color=indianred];
 
 subgraph ClusterFuck {
 
 	style=rounded;
+	margin=20;
 	color=red;
 	fontcolor=red;
 	fontsize=24;
@@ -44,14 +45,14 @@ subgraph ClusterFuck {
 {rank=same PHTN Catalyst};
 {rank=same Shunt Badness Death};
 
-CLM -> PMS;
+CLM -> PMS [arrowhead=none];
 PMS -> {CVP, PHP, MaybeCLE};
-CVP -> NIHF[arrowhead=none];
+CVP -> NIHF [arrowhead=none];
 NIHF -> IUD;
-MaybeCLE -> {Fear OR} -> FRC;
-MaybeCLE -> CLE[arrowhead=none];
+MaybeCLE -> {Fear OR}->FRC [arrowhead=none]
+MaybeCLE -> CLE [arrowhead=none];
 CLE -> Catalyst;
-PHP -> PHTN[weight=200]
+PHP -> PHTN [weight=200]
 {OR FRC} -> Catalyst;
 CVP -> PHP -> MaybeCLE [style=invis];
 Fear -> OR [style=invis];
