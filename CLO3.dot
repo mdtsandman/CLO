@@ -7,49 +7,53 @@ compound=true;
 node [color=grey style=filled fillcolor=grey];
 edge [color=grey];
 
-CLO [label="CLO"];
+CLO [label="CLO" fontsize=24];
 PMS [label="Persistent\nMediastinal Shift"];
-CVP [label="Central Venous\nInsufficiency" style=filled fontcolor=white fillcolor=orange2 color=orange2];
-PHP [label="Pulmonary\nHypoplasia" style=filled fontcolor=white fillcolor=orange2 color=orange2];
-MaybeCLE [label="Risk\nof CLE" style=filled fontcolor=white fillcolor=orange2 color=orange2];
+
+CVP [label="Central Venous\nInsufficiency" style=filled fillcolor=orange2 color=orange2];
+PHP [label="Pulmonary\nHypoplasia" style=filled fillcolor=orange2 color=orange2];
+MaybeCLE [label="Risk\nof CLE" style=filled fillcolor=orange2 color=orange2];
+
 NIHF [label="Non-Immune\nHydrops\nFetalis"];
-IUD [label="Intrauterine\nDemise" style=filled fontcolor=white fillcolor=indianred color=indianred];
-CLE [label="CLE"];
-OR [label="OR"];
+IUD [label="Intrauterine\nDemise" style=filled fillcolor=indianred color=indianred];
+
+OR [label="OR" style=filled fontcolor=white fillcolor=black color=black];
 Fear [label="Fear of PPV" style=filled fontcolor=white fillcolor=black color=black];
-Collapse [label="Atelectasis"];
+FRC [label="Low FRC" style=filled fontcolor=white fillcolor=black color=black];
+CLE [label="CLE"];
 
-CLO -> PMS;
-PMS -> {CVP, PHP, MaybeCLE};
+CLO -> {PMS MaybeCLE};
+PMS -> {CVP, PHP};
 CVP -> NIHF -> IUD;
-PHP -> PHTN;
 
-MaybeCLE -> CLE[style=dashed];
-MaybeCLE -> Fear -> Collapse -> {Badness, PHTN};
-Fear -> OR;
-CLE -> {Badness OR};
-OR -> Badness;
+MaybeCLE -> {Fear OR} -> FRC;
+MaybeCLE -> CLE[style=dashed arrowhead=none];
+CLE -> Doom;
 
-subgraph clusterFuck {
+{PHP OR FRC} -> Doom;
 
-	label="Loop of Doom";
+subgraph ClusterFuck {
+
 	style=rounded;
-	fontsize=25;
-	fontcolor="white";
-	labelloc=b;	
 	color=indianred;
 	bgcolor=indianred;
 
-	PHTN [label="Pulmonary\nHTN" style=filled fillcolor=white color=white];
-	Badness [label="Hypoxemia\n& Acidosis" style=filled fillcolor=white color=white];
+	subgraph ClusterAnchor {
+		Doom [label="Loop of Doom" shape=box fontsize= 24 fontcolor=black style=filled fillcolor=indianred color=indianred];
+		PHTN [label="Pulmonary\nHTN" style=filled fontcolor=white fillcolor=black color=black];
+		Doom -> PHTN[style=invis weight=100];
+	}
 
-	PHTN -> Badness[color=white penwidth=3];
-	Badness -> PHTN[color=white penwidth=3];
+	Shunt [label="R-to-L\nShunt" style=filled fontcolor=white fillcolor=black color=black];
+	Badness [label="Hypoxemia\n& Acidosis" style=filled fontcolor=white fillcolor=black color=black];
+
+	PHTN -> Shunt -> Badness -> PHTN[color=black];
 
 } //clusterFuck
 
 {rank=same PHP CVP MaybeCLE};
+{rank=same NIHF FRC CLE};
 {rank=same IUD PHTN};
+{rank=same Shunt Badness};
 
 } //Risks
-
