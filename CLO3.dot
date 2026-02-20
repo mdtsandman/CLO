@@ -16,7 +16,7 @@ NIHF [label="Non-Immune\nHydrops\nFetalis"];
 IUD [label="Intrauterine\nDemise" style=filled fontcolor=white fillcolor=indianred color=indianred];
 CLE [label="CLE"];
 OR [label="OR"];
-Fear [label="Fear of PPV"];
+Fear [label="Fear of PPV" style=filled fontcolor=white fillcolor=black color=black];
 Collapse [label="Atelectasis"];
 
 CLO -> PMS;
@@ -24,9 +24,9 @@ PMS -> {CVP, PHP, MaybeCLE};
 CVP -> NIHF -> IUD;
 PHP -> PHTN;
 
-MaybeCLE -> OR;
 MaybeCLE -> CLE[style=dashed];
 MaybeCLE -> Fear -> Collapse -> {Badness, PHTN};
+Fear -> OR;
 CLE -> {Badness OR};
 OR -> Badness;
 
