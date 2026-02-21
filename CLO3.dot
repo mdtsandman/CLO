@@ -7,56 +7,59 @@ compound=true;
 node [color=grey style=filled fillcolor=grey];
 edge [arrowhead=vee];
 
-CLM [label="CLM" fontsize=24];
+CLM [label="CLM" fontsize=32];
 PMS [label="Persistent\nMediastinal Shift"];
 CVP [label="Central Venous\nInsufficiency" style=filled fillcolor=orange2 color=orange2];
 PHP [label="Pulmonary\nHypoplasia" style=filled fillcolor=orange2 color=orange2];
 MaybeCLE [label="Potential\nCLE" style=filled fillcolor=orange2 color=orange2];
 NIHF [label="Non-Immune\nHydrops\nFetalis"];
-OR [label="OR"];
-Fear [label="Fear of PPV"];
-FRC [label="Low FRC"];
+OR [label="Immediate\nResection"];
+Fear [label="Fear\nof PPV"];
+FRC [label="Low Lung\nVolume"];
 CLE [label="CLE"];
 IUD [label="Intrauterine\nDemise" style=filled fillcolor=indianred color=indianred];
-Catalyst [label="Gas on the\nDumpster\nFire" fontcolor=white style=filled fillcolor=red color=red];
 Death [label="Postnatal\nDemise" style=filled fillcolor=indianred color=indianred];
+Catalyst [label="    Gas on the flames ..." height=0.5 shape=larrow fontcolor=white style=filled fillcolor=red color=red];
 
 subgraph ClusterFuck {
 
 	style=rounded;
 	margin=20;
 	color=red;
-	fontcolor=red;
+	fontcolor=white;
+	bgcolor=red;
+	color=red;
 	fontsize=24;
 	label="Dumpster Fire";
 	labelloc=b;
 
-	PHTN [label="Pulmonary\nHTN" style=filled fontcolor=white fillcolor=black color=black];
-	Shunt [label="R-to-L\nShunt" style=filled fontcolor=white fillcolor=black color=black];
-	Badness [label="Hypoxia\nHypoxemia\nAcidosis" style=filled fontcolor=white fillcolor=black color=black];
+	PHTN [label="Pulmonary\nHTN" style=filled fillcolor=white color=white];
+	Shunt [label="R-to-L\nShunt" style=filled fillcolor=white color=white];
+	Badness [label="Hypoxia\nHypoxemia\nAcidosis" style=filled fillcolor=white color=white];
 
-	PHTN -> Shunt -> Badness -> PHTN[color=black];
+	PHTN -> Shunt -> Badness -> PHTN[color=white];
 
 }
 
 {rank=same CVP PHP MaybeCLE};
-{rank=same NIHF Fear OR};
-{rank=same IUD FRC CLE};
+{rank=same NIHF Fear};
+{rank=same IUD FRC OR CLE};
 {rank=same PHTN Catalyst};
 {rank=same Shunt Badness Death};
 
 CLM -> PMS [arrowhead=none];
 PMS -> {CVP, PHP, MaybeCLE};
-CVP -> NIHF [arrowhead=none];
-NIHF -> IUD;
-MaybeCLE -> {Fear OR}->FRC [arrowhead=none]
+CVP -> NIHF [arrowhead=none weight=100];
+NIHF -> IUD [weight=100];
+MaybeCLE -> Fear-> {FRC OR} [arrowhead=none]
 MaybeCLE -> CLE [arrowhead=none];
 CLE -> Catalyst;
 PHP -> PHTN [weight=200]
 {OR FRC} -> Catalyst;
 CVP -> PHP -> MaybeCLE [style=invis];
-Fear -> OR [style=invis];
-FRC -> CLE [style=invis];
-Catalyst -> Death;
+NIHF -> Fear -> OR [style=invis];
+IUD -> FRC -> OR -> CLE [style=invis];
+Catalyst -> Death [style=invis] weight=100;
+Badness -> Death;
 
 }

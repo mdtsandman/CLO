@@ -4,39 +4,77 @@ rankdir=TB;
 newrank=true;
 compound=true;
 
-node [color=grey];
-edge [color=grey arrowhead=vee];
+node [style=filled color=grey fillcolor=grey];
+edge [arrowhead=none];
 
-US [label="Antenatal US" style=filled fillcolor=grey];
-HighRisk [shape=box label="HIGH Risk of Hypoplasia\n\n- Marked mediastinal shift\l- Eversion of diaphragm\l- Small unaffected lung\l"];
-LowRisk [shape=box label="LOW Risk of Hypoplasia\n\n- Mediastinal shift minor/absent\l- No eversion of diaphragm\l- Generous unaffected lung\l"];
-CVRTrend [label="Follow\nCVR trend" style=filled fillcolor=grey];
-GoodTrend [shape=box label="Reassuring"];
-BadTrend [shape=box label="Worrisome"];
-MRI [label="MRI" style=filled fillcolor=grey];
-SevereHypoplasia [shape=box label="O/E TLV < 50%\l"];
-MildHypoplasia [shape=box label="O/E TLV > 50%\l"];
-NRP [label="NRP" style=filled fontcolor=white fillcolor=darkseagreen color=darkseagreen];
-HFJV [label="HFJV" style=filled fontcolor=white fillcolor=orange2 color=orange2];
-EXIT [label="EXIT" style=filled fontcolor=white fillcolor=indianred color=indianred];
+US [label="Antenatal US"];
+HighRisk [color=orange2 fillcolor=orange2 fontcolor=white label="Severe\nMediastinal Shift"];
+LowRisk [color=darkseagreen fillcolor=darkseagreen fontcolor=white label="No (or minor)\nMediastinal Shift"];
+NRP [label="NRP\nPathway" style=filled fontcolor=white fillcolor=darkseagreen color=darkseagreen];
+HFJV [label="HFJV\nPathway" style=filled fontcolor=white fillcolor=orange2 color=orange2];
+EXIT [label="EXIT\nPathway" style=filled fontcolor=white fillcolor=indianred color=indianred];
+
+subgraph ClusterCVR {
+
+	style=rounded;
+	color=white;
+	bgcolor=white;
+
+	CVRTrend [label="Serial\nUltrasound"];
+	GoodTrend [label="Reassuring" fillcolor=darkseagreen color=darkseagreen fontcolor=white];
+	BadTrend [label="Worrisome" fillcolor=orange2 color=orange2 fontcolor=white];
+
+}
+		
+subgraph ClusterMRI {
+	
+	style=rounded;
+	color=white;
+	bgcolor=white;
+
+	MRI [label="Serial Ultrasound +\nMRI for Lung Volume"];
+	MildHP [label="Reassuring" fillcolor=darkseagreen color=darkseagreen fontcolor=white];
+	SevereHP [label="Worrisome" fillcolor=orange2 color=orange2 fontcolor=white];
+
+}
+
+subgraph ClusterMRI2 {
+
+	style=rounded;
+	color=white;
+	bgcolor=white;
+
+	MRI2 [label="Late\nGestation\nMRI"];
+	MildHP2 [label="Mild Hypoplasia\nwithout\nMediastinal Shift" fillcolor=darkseagreen color=darkseagreen fontcolor=white];
+	ModerateHP2 [label="Moderate\nHypoplasia +\nMediastinal Shift" fillcolor=orange2 color=orange2 fontcolor=white];
+	SevereHP2 [label="Severe\nHypoplasia +\nMediastinal Shift" fillcolor=indianred color=indianred fontcolor=white];
+
+}
 
 US -> {HighRisk, LowRisk};
-HighRisk -> MRI;
-LowRisk ->CVRTrend;
-MRI -> SevereHypoplasia;
-MRI -> MildHypoplasia;
+LowRisk -> CVRTrend[arrowhead=vee weight=100];
+CVRTrend -> GoodTrend [weight=200];
+GoodTrend -> NRP [arrowhead=vee weight=100];
 CVRTrend -> BadTrend;
-CVRTrend -> GoodTrend;
-BadTrend -> MRI;
-GoodTrend -> NRP;
-MildHypoplasia -> NRP;
-SevereHypoplasia -> {HFJV, EXIT};
+HighRisk -> MRI [arrowhead=vee weight=200];
+BadTrend -> MRI2 [arrowhead=vee];
+MRI -> {MildHP SevereHP};
+MildHP -> CVRTrend [arrowhead=vee];
+
+SevereHP -> MRI2 [arrowhead=vee weight=100];
+
+MRI2 -> {MildHP2 ModerateHP2 SevereHP2} [weight=100];
+
+MildHP2 -> NRP [arrowhead=vee];
+ModerateHP2 -> HFJV [arrowhead=vee];
+SevereHP2 -> EXIT [arrowhead=vee weight=200];
 
 NRP -> HFJV -> EXIT [style=invis];
 
+{ rank=same; GoodTrend BadTrend };
+{ rank=same; MildHP SevereHP }
 { rank=same; LowRisk; HighRisk; }
-{ rank=same; GoodTrend; BadTrend; }
-{ rank=same; MildHypoplasia; SevereHypoplasia; }
+{ rank=same; MildHP2; SevereHP2; }
 { rank=same; LowRisk; HighRisk; }
 { rank=same; NRP; HFJV; EXIT; }
 
