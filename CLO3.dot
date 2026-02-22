@@ -5,7 +5,7 @@ newrank=true;
 compound=true;
 
 node [color=grey style=filled fillcolor=grey];
-edge [arrowhead=vee color=grey];
+edge [arrowhead=vee];
 
 CLM [label="CLM" fontsize=32];
 PMS [label="Persistent\nMediastinal Shift"];
@@ -19,7 +19,7 @@ FRC [label="Low Lung\nVolume"];
 CLE [label="Actual\nCLE"];
 IUD [label="Intrauterine\nDemise" style=filled fillcolor=black color=white fontcolor=white];
 Death [label="Postnatal\nDemise" style=filled fillcolor=black color=white fontcolor=white];
-Catalyst [label="Gas on\nthe Flames" height=0.5 fontcolor=white style=filled fillcolor=red color=white];
+Catalyst [label="Gas on\nthe Fire" fontcolor=white style=filled fillcolor=red color=white];
 
 subgraph ClusterFuck {
 
@@ -77,12 +77,12 @@ MaybeCLE -> Fear[arrowhead=none weight=100];
 Fear -> FRC [arrowhead=none];
 Fear -> OR [arrowhead=none];
 MaybeCLE -> CLE [arrowhead=none];
-PHP -> PHTN [arrowhead=none color=red penwidth=2 weight=200]
+PHP -> PHTN [weight=200]
 
 FRC -> Catalyst [weight=100];
 OR -> Catalyst [weight=100];
 CLE -> Catalyst;
-Catalyst -> PHTN[arrowhead=none color=red penwidth=2];
+Catalyst -> PHTN;
 
 CVP -> PHP -> MaybeCLE [style=invis];
 NIHF -> Fear -> CLE [style=invis];
@@ -90,6 +90,6 @@ IUD -> FRC -> OR [style=invis];
 PHTN -> Catalyst [style=invis];
 
 Catalyst -> Death [style=invis weight=100];
-Badness -> Death[color=red penwidth=2];
+Badness -> Death;
 
 }
