@@ -5,62 +5,56 @@ newrank=true;
 compound=true;
 
 node [color=grey style=filled fillcolor=grey];
-edge [arrowhead=vee];
+edge [arrowhead=vee color=grey];
 
 CLM [label="CLM" fontsize=32];
 PMS [label="Persistent\nMediastinal Shift"];
-CVP [label="Central Venous\nInsufficiency" style=filled fillcolor=orange2 color=orange2];
-PHP [label="Pulmonary\nHypoplasia" style=filled fillcolor=orange2 color=orange2];
-MaybeCLE [label="Potential\nCLE" style=filled fillcolor=orange2 color=orange2];
+PHP [label="Pulmonary\nHypoplasia" fillcolor=orange2 color=white];
+CVP [label="Central Venous\nInsufficiency" fillcolor=orange2 color=white];
+MaybeCLE [label="Potential\nCLE" fillcolor=orange2 color=white];
 NIHF [label="Non-Immune\nHydrops\nFetalis"];
 OR [label="Immediate\nResection"];
 Fear [label="Fear\nof CLE"];
 FRC [label="Low Lung\nVolume"];
 CLE [label="Actual\nCLE"];
-IUD [label="Intrauterine\nDemise" style=filled fillcolor=indianred color=indianred];
-Death [label="Postnatal\nDemise" style=filled fillcolor=indianred color=indianred];
-Catalyst [label="    Gas on the flames ..." height=0.5 shape=larrow fontcolor=white style=filled fillcolor=red color=red];
+IUD [label="Intrauterine\nDemise" style=filled fillcolor=black color=white fontcolor=white];
+Death [label="Postnatal\nDemise" style=filled fillcolor=black color=white fontcolor=white];
+Catalyst [label="Gas on\nthe Flames" height=0.5 fontcolor=white style=filled fillcolor=red color=white];
 
 subgraph ClusterFuck {
 
 	style=rounded;
 	margin=20;
 	color=red;
-	fontcolor=white;
 	bgcolor=red;
-	color=red;
+	fontcolor=white;
 	fontsize=32;
 	label="Dumpster Fire";
 	labelloc=b;
 
-	node [fillcolor=white color=white];
+	node [fillcolor=white color=red fontcolor=red];
 	edge [color=white];
 
-	PHTN [label="High PVR"];
+	RVI [label="RV ischemia"];
+	RVF [label="RV failure"];
 	
 	subgraph ClusterTriad {
 
 		label="";
 		margin=0;
+		PHTN [label="High PVR"];
 		Shunt [label="R-to-L\nShunt"];
+		LowBP [label="Low\nBP"];
 		Badness [label="- Hypoxia\l- Hypoxemia\l- Acidosis\l"];
-		LowBP [label="Systemic\nHypotension"];
 	
-		LowBP -> Shunt -> Badness[weight=200];
+		PHTN -> LowBP -> Shunt -> Badness;
 
 	}
-
-	RVI [label="RV ischemia"];
-	RVF [label="RV failure"];
-
+	
 	PHTN -> Shunt;
-	PHTN -> LowBP;
-
-	Badness -> PHTN;
+	Badness -> PHTN[weight=200];
 	RVF -> LowBP;
 	RVF -> Shunt;
-	RVF -> RVI;
-
 	LowBP -> RVI;
 	RVI -> RVF;
 
@@ -73,28 +67,29 @@ subgraph ClusterFuck {
 {rank=same NIHF Fear CLE};
 {rank=same IUD FRC OR};
 {rank=same PHTN Catalyst};
-{rank=same Badness Death};
+{rank=same Badness Shunt Death};
 
-CLM -> PMS [arrowhead=none];
-PMS -> {CVP, PHP, MaybeCLE};
+CLM -> {PMS CVP} [arrowhead=none];
+PMS -> {PHP, MaybeCLE};
 CVP -> NIHF [arrowhead=none weight=100];
 NIHF -> IUD [weight=100];
 MaybeCLE -> Fear[arrowhead=none weight=100];
 Fear -> FRC [arrowhead=none];
 Fear -> OR [arrowhead=none];
 MaybeCLE -> CLE [arrowhead=none];
-PHP -> PHTN [weight=200]
+PHP -> PHTN [arrowhead=none color=red penwidth=2 weight=200]
+
 FRC -> Catalyst [weight=100];
 OR -> Catalyst [weight=100];
 CLE -> Catalyst;
+Catalyst -> PHTN[arrowhead=none color=red penwidth=2];
 
 CVP -> PHP -> MaybeCLE [style=invis];
 NIHF -> Fear -> CLE [style=invis];
 IUD -> FRC -> OR [style=invis];
 PHTN -> Catalyst [style=invis];
 
-Catalyst -> Death [style=invis] weight=100;
-
-Badness -> Death[weight=5000];
+Catalyst -> Death [style=invis weight=100];
+Badness -> Death[color=red penwidth=2];
 
 }
