@@ -7,8 +7,7 @@ compound=true;
 node [color=grey style=filled fillcolor=grey];
 edge [arrowhead=vee];
 
-CLM [label="CLM" fontsize=32];
-PMS [label="Persistent\nMediastinal Shift"];
+PME [label="Persistent\nMass Effect"];
 PHP [label="Pulmonary\nHypoplasia" fillcolor=orange2 color=white];
 CVP [label="Central Venous\nInsufficiency" fillcolor=orange2 color=white];
 MaybeCLE [label="Potential\nCLE" fillcolor=orange2 color=white];
@@ -69,14 +68,12 @@ subgraph ClusterFuck {
 {rank=same PHTN Catalyst};
 {rank=same Badness Shunt Death};
 
-CLM -> {PMS CVP} [arrowhead=none];
-PMS -> {PHP, MaybeCLE};
+PME -> {CVP PHP};
 CVP -> NIHF [arrowhead=none weight=100];
 NIHF -> IUD [weight=100];
-MaybeCLE -> Fear[arrowhead=none weight=100];
+MaybeCLE -> {Fear CLE}[arrowhead=none];
 Fear -> FRC [arrowhead=none];
 Fear -> OR [arrowhead=none];
-MaybeCLE -> CLE [arrowhead=none];
 PHP -> PHTN [weight=200]
 
 FRC -> Catalyst [weight=100];
@@ -84,7 +81,7 @@ OR -> Catalyst [weight=100];
 CLE -> Catalyst;
 Catalyst -> PHTN;
 
-CVP -> PHP -> MaybeCLE [style=invis];
+//CVP -> PHP -> MaybeCLE [style=invis];
 NIHF -> Fear -> CLE [style=invis];
 IUD -> FRC -> OR [style=invis];
 PHTN -> Catalyst [style=invis];
