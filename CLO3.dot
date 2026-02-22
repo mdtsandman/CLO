@@ -14,7 +14,7 @@ MaybeCLE [label="Potential\nCLE" fillcolor=orange2 color=white];
 NIHF [label="Non-Immune\nHydrops\nFetalis"];
 OR [label="Immediate\nResection"];
 Fear [label="Fear\nof CLE"];
-FRC [label="Low Lung\nVolume"];
+FRC [label="Lung\nCollapse"];
 CLE [label="Actual\nCLE"];
 IUD [label="Intrauterine\nDemise" style=filled fillcolor=black color=white fontcolor=white];
 Death [label="Postnatal\nDemise" style=filled fillcolor=black color=white fontcolor=white];
