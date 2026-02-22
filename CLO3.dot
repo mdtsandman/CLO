@@ -75,18 +75,15 @@ MaybeCLE -> {Fear CLE}[arrowhead=none];
 Fear -> FRC [arrowhead=none];
 Fear -> OR [arrowhead=none];
 PHP -> PHTN [weight=200]
-
 FRC -> Catalyst [weight=100];
 OR -> Catalyst [weight=100];
 CLE -> Catalyst;
 Catalyst -> PHTN;
+Badness -> Death;
 
-//CVP -> PHP -> MaybeCLE [style=invis];
 NIHF -> Fear -> CLE [style=invis];
 IUD -> FRC -> OR [style=invis];
 PHTN -> Catalyst [style=invis];
-
 Catalyst -> Death [style=invis weight=100];
-Badness -> Death;
 
 }
