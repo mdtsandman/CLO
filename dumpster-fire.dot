@@ -10,17 +10,21 @@ node [color=white style=filled fillcolor=white];
 edge [arrowhead=none color=white];
 
 MaybeCLE [label="Potential\nCLE" fillcolor=orange2 color=grey];
-NIHF [label="Non-Immune\nHydrops\nFetalis"];
+NIHF [label="Non-Immune\nHydrops"];
 OR [label="Immediate\nResection"];
 Fear [label="Fear\nof CLE"];
 FRC [label="Lung\nCollapse"];
 IUD [label="Intrauterine\nDemise" style=filled fillcolor=black color=grey fontcolor=white];
-Death [label="Postnatal\nDemise" style=filled fillcolor=black color=grey fontcolor=white];
-Catalyst [label="Gas on\nthe Fire" fontcolor=white style=filled fillcolor=red color=grey];
-Dummy1 [style=invis];
-Dummy2 [style=invis];
+Gas [label="Gas on\nthe Fire" fontcolor=white style=filled fillcolor=red color=grey];
+Death [label="Death" style=filled fillcolor=black color=grey fontcolor=white];
+D1;
+D2;
+D3;
+D4;
+D5;
+D6;
 
-CVP [label="Central Venous\nInsufficiency" fillcolor=orange2 color=orange2];
+CVI [label="Central Venous\nInsufficiency" fillcolor=orange2 color=orange2];
 PHP [label="Pulmonary\nHypoplasia" fillcolor=orange2 color=orange2];
 
 subgraph ClusterFuck {
@@ -33,8 +37,6 @@ subgraph ClusterFuck {
 	node [fillcoloir=white color=red fontcolor=red];
 	edge [arrowhead=vee color=white];
 
-	Label [label="Dumpster\nFire" shape=box fontsize=32 fontcolor=white fillcolor=red color=red];
-
 	RVI [label="RV\nischemia"];
 	RVF [label="RV\nfailure"];
 	PHTN [label="High\nPVR"];
@@ -43,41 +45,36 @@ subgraph ClusterFuck {
 	Badness [label="Hypoxemia\n& Acidosis"];
 
 	PHTN -> LowBP -> Badness -> PHTN;
-	PHTN -> Shunt [weight=100];
+	PHTN -> Shunt;
 	Shunt -> Badness;
 	PHTN -> RVF;
 	LowBP -> RVI;
-	RVI -> RVF [weight=150];
-	RVF -> LowBP [weight=100];
+	RVI -> RVF;
+	RVF -> LowBP;
 	LowBP -> Shunt;
 
-	{rank=same PHTN RVF};
-	{rank=same LowBP Shunt};
-	{rank=same RVI Shunt};
-	{rank=same Badness Label};
+	{rank=min PHTN};
+	{rank=max Badness};
 
 }
 
-{rank=same CVP MaybeCLE};
-{rank=same NIHF Fear};
-{rank=same IUD OR FRC};
-{rank=same PHP PHTN};
-{rank=same Dummy2 Shunt};
-{rank=same Death Badness};
+//{rank=same D1 RVF LowBP};
+//{rank=same D2 RVI};
+{rank=same CVI NIHF IUD};
+{rank=same MaybeCLE Fear OR FRC Gas};
+//{rank=same PHP PHTN};
+//{rank=same D3 Badness Death};
 
-
-PHP -> PHTN [arrowhead=vee];
-CVP -> NIHF [weight=100];
-NIHF -> IUD [arrowhead=vee weight=100];
-MaybeCLE -> Fear [weight=100];
-Fear -> {FRC OR};
-{FRC OR} -> Catalyst [arrowhead=vee];
-Catalyst -> PHTN [style=invis arrowhead=vee];
-Badness -> Death [arrowhead=vee];
+PHP -> PHTN [arrowhead=vee weight=1500];
+CVI -> NIHF;
+NIHF -> IUD [arrowhead=vee];
+MaybeCLE -> Fear;
+Fear -> {FRC OR} -> Gas [arrowhead=vee];
+Badness -> Death[constraint=false];
 
 // invis edges to force ordering and alignment ...
 
-CVP -> MaybeCLE [style=invis];
-IUD -> PHP -> Dummy2 -> Death [style=invis weight=100];
-FRC -> RVF [style=invis weight=100];
+CVI -> PHP -> D1 -> D2 -> D3 -> MaybeCLE [color=black weight=5000];
+IUD -> D4 -> D5 -> D6 -> Death ->Gas [color=black weight=5000];
+
 }
