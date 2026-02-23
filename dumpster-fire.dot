@@ -1,5 +1,6 @@
 digraph Risks {
 
+pad=0.3;
 rankdir=TB;
 newrank=true;
 compound=true;
@@ -35,23 +36,26 @@ subgraph ClusterFuck {
 
 	Label [label="Dumpster\nFire" shape=box fontsize=32 fontcolor=white fillcolor=red color=red];
 
-	RVI [label="RV ischemia"];
-	RVF [label="RV failure"];
-	
-	PHTN [label="High PVR"];
+	RVI [label="RV\nischemia"];
+	RVF [label="RV\nfailure"];
+	PHTN [label="High\nPVR"];
 	Shunt [label="R-to-L\nShunt"];
 	LowBP [label="Low\nBP"];
 	Badness [label="Hypoxemia\n& Acidosis"];
-	PHTN -> LowBP -> Shunt -> Badness;
-	PHTN -> Shunt;
-	Badness -> PHTN;
-	RVF -> LowBP;
-	RVF -> Shunt;
-	LowBP -> RVI;
-	RVI -> RVF;
 
-	{rank=same PHTN LowBP RVI};
-	{rank=same RVF Shunt};
+	PHTN -> LowBP -> Badness -> PHTN;
+	PHTN -> Shunt -> Badness;
+	PHTN -> RVF;
+	LowBP -> RVI;
+	RVI -> RVF [weight=150];
+	RVF -> LowBP [weight=100];
+	LowBP -> Shunt;
+
+	PHTN -> RVF [style=invis];
+
+	{rank=same PHTN RVF};
+	{rank=same LowBP Shunt};
+	{rank=same RVI Shunt};
 	{rank=same Badness Label};
 
 }
