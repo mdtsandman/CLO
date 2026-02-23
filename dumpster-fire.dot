@@ -3,25 +3,49 @@ digraph Risks {
 rankdir=TB;
 newrank=true;
 compound=true;
-bgcolor=grey;
-pad = 0.3;
 
-node [color=white style=filled fillcolor=white];
+node [color=grey style=filled fillcolor=white];
 edge [arrowhead=none color=white];
 
-MaybeCLE [label="Potential\nCLE" fillcolor=orange2 color=grey];
-NIHF [label="Non-Immune\nHydrops\nFetalis"];
-OR [label="Immediate\nResection"];
-Fear [label="Fear\nof CLE"];
-FRC [label="Lung\nCollapse"];
-IUD [label="Intrauterine\nDemise" style=filled fillcolor=black color=grey fontcolor=white];
-Death [label="Postnatal\nDemise" style=filled fillcolor=black color=grey fontcolor=white];
-Catalyst [label="Gas on\nthe Fire" fontcolor=white style=filled fillcolor=red color=grey];
-Dummy1 [style=invis];
-Dummy2 [style=invis];
 
-CVP [label="Central Venous\nInsufficiency" fillcolor=orange2 color=orange2];
-PHP [label="Pulmonary\nHypoplasia" fillcolor=orange2 color=orange2];
+subgraph ClusterHydrops {
+
+	style=rounded;
+	margin=20;
+	color=grey;
+	bgcolor=grey;
+	fontcolor=white;
+
+  CVI [label="Venous Obstruction" shape=box fixedwidth=true width=4 fillcolor=grey color=grey fontsize=28];
+	
+	NIHF [label="Non-Immune\nHydrops"];
+	IUD [label="Intrauterine\nDemise" style=filled fillcolor=black color=black fontcolor=white];
+
+	CVI -> NIHF [style=invis];
+	NIHF -> IUD;
+
+}
+
+subgraph ClusterGas {
+
+	style=rounded;
+	margin=20;
+	color=grey;
+	bgcolor=grey;
+	fontcolor=white;
+	
+  MaybeCLE [label="Potential CLE" shape=box fixedwidth=true width=4 fillcolor=grey color=grey fontsize=28];
+
+	OR [label="Immediate\nResection"];
+	Fear [label="Fear\nof CLE"];
+	FRC [label="Lung\nCollapse"];
+	Gas [label="Gas on\nthe flames" fillcolor=red fontcolor=white ];
+
+	MaybeCLE -> Fear [style=invis];
+	Fear -> {FRC OR};
+	{FRC OR} -> Gas [arrowhead=vee];	
+
+}
 
 subgraph ClusterFuck {
 
@@ -29,55 +53,42 @@ subgraph ClusterFuck {
 	margin=20;
 	color=red;
 	bgcolor=red;
+	fontcolor=white;
 
-	node [fillcoloir=white color=red fontcolor=red];
+  PHP [label="Pulmonary Hypoplasia" shape=box fillcolor=red color=red fontsize=28 fontcolor=white];
+	
+	node [fillcolor=white color=red fontcolor=red];
 	edge [arrowhead=vee color=white];
-
-	Label [label="Dumpster\nFire" shape=box fontsize=32 fontcolor=white fillcolor=red color=red];
 
 	RVI [label="RV\nischemia"];
 	RVF [label="RV\nfailure"];
 	PHTN [label="High\nPVR"];
 	Shunt [label="R-to-L\nShunt"];
 	LowBP [label="Low\nBP"];
-	Badness [label="Hypoxemia\n& Acidosis"];
+	Hypoxia [label="Hypoxemia"];
+	Acidosis [label="Acidosis"];
+	Death [label="Postnatal\nDemise" style=filled fillcolor=black color=black fontcolor=white];
 
-	PHTN -> LowBP -> Badness -> PHTN;
-	PHTN -> Shunt [weight=100];
-	Shunt -> Badness;
-	PHTN -> RVF;
-	LowBP -> RVI;
-	RVI -> RVF [weight=150];
-	RVF -> LowBP [weight=100];
+	PHP -> PHTN [style=invis];
+
+	LowBP -> Acidosis;
+	PHTN -> Shunt;
+	Shunt -> Hypoxia;
+	Shunt -> Acidosis;
+	PHTN -> RVF
+	RVF -> LowBP -> RVI -> RVF;
 	LowBP -> Shunt;
+	Acidosis -> PHTN;
+	Hypoxia -> PHTN;
 
-	{rank=same PHTN RVF};
-	{rank=same LowBP Shunt};
-	{rank=same RVI Shunt};
-	{rank=same Badness Label};
-
+	{ rank=same RVF RVI };
+	{ rank=same LowBP Shunt };
+	{ rank=same PHTN Acidosis Hypoxia };
 }
 
-{rank=same CVP MaybeCLE};
-{rank=same NIHF Fear};
-{rank=same IUD OR FRC};
-{rank=same PHP PHTN};
-{rank=same Dummy2 Shunt};
-{rank=same Death Badness};
+IUD -> MaybeCLE [style=invis weight=100];
 
+{ rank=same NIHF PHTN };
+{ rank=same Gas Death };
 
-PHP -> PHTN [arrowhead=vee];
-CVP -> NIHF [weight=100];
-NIHF -> IUD [arrowhead=vee weight=100];
-MaybeCLE -> Fear [weight=100];
-Fear -> {FRC OR};
-{FRC OR} -> Catalyst [arrowhead=vee];
-Catalyst -> PHTN [style=invis arrowhead=vee];
-Badness -> Death [arrowhead=vee];
-
-// invis edges to force ordering and alignment ...
-
-CVP -> MaybeCLE [style=invis];
-IUD -> PHP -> Dummy2 -> Death [style=invis weight=100];
-FRC -> RVF [style=invis weight=100];
 }
