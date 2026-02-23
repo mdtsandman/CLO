@@ -6,22 +6,20 @@ compound=true;
 bgcolor=grey;
 pad = 0.3;
 
-node [color=white style=filled fillcolor=white];
-edge [arrowhead=none color=white];
+node [color=grey style=filled fillcolor=white];
+edge [arrowhead=vee color=white];
+
+PHP [label="Pulmonary\nHypoplasia" fillcolor=orange2 color=grey];
 
 MaybeCLE [label="Potential\nCLE" fillcolor=orange2 color=grey];
-NIHF [label="Non-Immune\nHydrops\nFetalis"];
+Fear [label="Fear\nof PPV"];
 OR [label="Immediate\nResection"];
-Fear [label="Fear\nof CLE"];
-FRC [label="Lung\nCollapse"];
-IUD [label="Intrauterine\nDemise" style=filled fillcolor=black color=grey fontcolor=white];
-Death [label="Postnatal\nDemise" style=filled fillcolor=black color=grey fontcolor=white];
 Catalyst [label="Gas on\nthe Fire" fontcolor=white style=filled fillcolor=red color=grey];
-Dummy1 [style=invis];
-Dummy2 [style=invis];
+Death [label="Death" style=filled fillcolor=black color=grey fontcolor=white];
 
-CVP [label="Central Venous\nInsufficiency" fillcolor=orange2 color=orange2];
-PHP [label="Pulmonary\nHypoplasia" fillcolor=orange2 color=orange2];
+// Dummy nodes for alignment
+D1 [style=invis];
+D2 [style=invis];
 
 subgraph ClusterFuck {
 
@@ -30,7 +28,7 @@ subgraph ClusterFuck {
 	color=red;
 	bgcolor=red;
 
-	node [fillcoloir=white color=red fontcolor=red];
+	node [fillcolor=white color=red fontcolor=red];
 	edge [arrowhead=vee color=white];
 
 	Label [label="Dumpster\nFire" shape=box fontsize=32 fontcolor=white fillcolor=red color=red];
@@ -58,26 +56,23 @@ subgraph ClusterFuck {
 
 }
 
-{rank=same CVP MaybeCLE};
-{rank=same NIHF Fear};
-{rank=same IUD OR FRC};
+{rank=min MaybeCLE};
+{rank=same Fear D2 OR};
 {rank=same PHP PHTN};
-{rank=same Dummy2 Shunt};
+{rank=same D1 Shunt};
 {rank=same Death Badness};
 
 
-PHP -> PHTN [arrowhead=vee];
-CVP -> NIHF [weight=100];
-NIHF -> IUD [arrowhead=vee weight=100];
-MaybeCLE -> Fear [weight=100];
-Fear -> {FRC OR};
-{FRC OR} -> Catalyst [arrowhead=vee];
-Catalyst -> PHTN [style=invis arrowhead=vee];
-Badness -> Death [arrowhead=vee];
+PHP -> PHTN;
+
+MaybeCLE -> {Fear OR} -> Catalyst;
+Catalyst -> PHTN [weight=200];
+
+Badness -> Death;
 
 // invis edges to force ordering and alignment ...
+Fear -> D2 -> OR [style=invis];
+MaybeCLE -> D2 -> Catalyst [style=invis weight=200];
+PHP -> D1 -> Death [style=invis weight=200];
 
-CVP -> MaybeCLE [style=invis];
-IUD -> PHP -> Dummy2 -> Death [style=invis weight=100];
-FRC -> RVF [style=invis weight=100];
 }
