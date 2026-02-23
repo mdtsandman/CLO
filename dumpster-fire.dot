@@ -1,17 +1,14 @@
 digraph Risks {
 
-pad=0.3;
 rankdir=TB;
 newrank=true;
 compound=true;
 bgcolor=grey;
+pad = 0.3;
 
 node [color=white style=filled fillcolor=white];
 edge [arrowhead=none color=white];
 
-PME [label="Persistent\nMass Effect"];
-PHP [label="Pulmonary\nHypoplasia" fillcolor=orange2 color=grey];
-CVP [label="Central Venous\nInsufficiency" fillcolor=orange2 color=grey];
 MaybeCLE [label="Potential\nCLE" fillcolor=orange2 color=grey];
 NIHF [label="Non-Immune\nHydrops\nFetalis"];
 OR [label="Immediate\nResection"];
@@ -24,6 +21,9 @@ Catalyst [label="Gas on\nthe Fire" fontcolor=white style=filled fillcolor=red co
 Dummy1 [style=invis];
 Dummy2 [style=invis];
 
+CVP [label="Central Venous\nInsufficiency" fillcolor=orange2 color=orange2];
+PHP [label="Pulmonary\nHypoplasia" fillcolor=orange2 color=orange2];
+
 subgraph ClusterFuck {
 
 	style=rounded;
@@ -31,7 +31,7 @@ subgraph ClusterFuck {
 	color=red;
 	bgcolor=red;
 
-	node [fillcolor=white color=red fontcolor=red];
+	node [fillcoloir=white color=red fontcolor=red];
 	edge [arrowhead=vee color=white];
 
 	Label [label="Dumpster\nFire" shape=box fontsize=32 fontcolor=white fillcolor=red color=red];
@@ -44,14 +44,13 @@ subgraph ClusterFuck {
 	Badness [label="Hypoxemia\n& Acidosis"];
 
 	PHTN -> LowBP -> Badness -> PHTN;
-	PHTN -> Shunt -> Badness;
+	PHTN -> Shunt [weight=100];
+	Shunt -> Badness;
 	PHTN -> RVF;
 	LowBP -> RVI;
 	RVI -> RVF [weight=150];
 	RVF -> LowBP [weight=100];
 	LowBP -> Shunt;
-
-	PHTN -> RVF [style=invis];
 
 	{rank=same PHTN RVF};
 	{rank=same LowBP Shunt};
@@ -60,29 +59,27 @@ subgraph ClusterFuck {
 
 }
 
-{rank=same PME MaybeCLE};
-{rank=same CVP PHP Fear CLE};
-{rank=same NIHF FRC OR};
-{rank=same IUD Catalyst};
+{rank=same CVP PHP MaybeCLE};
+{rank=same NIHF Fear CLE};
+{rank=same IUD OR FRC};
 {rank=same Dummy1 PHTN};
 {rank=same Dummy2 Shunt};
 {rank=same Death Badness};
 
 
-PME -> {CVP PHP};
 CVP -> NIHF [weight=100];
 NIHF -> IUD [arrowhead=vee weight=100];
 MaybeCLE -> {Fear CLE};
 Fear -> {FRC OR};
-PHP -> PHTN [arrowhead=vee weight=200]
+PHP -> PHTN [arrowhead=vee];
 {FRC OR} -> Catalyst [arrowhead=vee weight=100];
 CLE -> Catalyst [arrowhead=vee];
 Catalyst -> PHTN [style=invis arrowhead=vee];
 Badness -> Death [arrowhead=vee];
 
-PHP -> MaybeCLE [style=invis];
+CVP -> PHP -> MaybeCLE [style=invis];
 Fear -> CLE [style=invis];
-CVP -> PHP [style=invis weight=300];
+FRC -> OR [style=invis];
 IUD -> Dummy1 -> Dummy2 -> Death [style=invis weight=200];
 
 }
