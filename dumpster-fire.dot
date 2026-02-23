@@ -14,7 +14,6 @@ NIHF [label="Non-Immune\nHydrops\nFetalis"];
 OR [label="Immediate\nResection"];
 Fear [label="Fear\nof CLE"];
 FRC [label="Lung\nCollapse"];
-CLE [label="Actual\nCLE"];
 IUD [label="Intrauterine\nDemise" style=filled fillcolor=black color=grey fontcolor=white];
 Death [label="Postnatal\nDemise" style=filled fillcolor=black color=grey fontcolor=white];
 Catalyst [label="Gas on\nthe Fire" fontcolor=white style=filled fillcolor=red color=grey];
@@ -59,27 +58,26 @@ subgraph ClusterFuck {
 
 }
 
-{rank=same CVP PHP MaybeCLE};
-{rank=same NIHF Fear CLE};
+{rank=same CVP MaybeCLE};
+{rank=same NIHF Fear};
 {rank=same IUD OR FRC};
-{rank=same Dummy1 PHTN};
+{rank=same PHP PHTN};
 {rank=same Dummy2 Shunt};
 {rank=same Death Badness};
 
 
+PHP -> PHTN [arrowhead=vee];
 CVP -> NIHF [weight=100];
 NIHF -> IUD [arrowhead=vee weight=100];
-MaybeCLE -> {Fear CLE};
+MaybeCLE -> Fear [weight=100];
 Fear -> {FRC OR};
-PHP -> PHTN [arrowhead=vee];
-{FRC OR} -> Catalyst [arrowhead=vee weight=100];
-CLE -> Catalyst [arrowhead=vee];
+{FRC OR} -> Catalyst [arrowhead=vee];
 Catalyst -> PHTN [style=invis arrowhead=vee];
 Badness -> Death [arrowhead=vee];
 
-CVP -> PHP -> MaybeCLE [style=invis];
-Fear -> CLE [style=invis];
-FRC -> OR [style=invis];
-IUD -> Dummy1 -> Dummy2 -> Death [style=invis weight=200];
+// invis edges to force ordering and alignment ...
 
+CVP -> MaybeCLE [style=invis];
+IUD -> PHP -> Dummy2 -> Death [style=invis weight=100];
+FRC -> RVF [style=invis weight=100];
 }
