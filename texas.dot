@@ -1,0 +1,121 @@
+digraph Texas {
+
+newrank=true;
+rankdir=TB;
+compound=true;
+center=true;
+
+node [fontsize=20];
+edge [arrowhead=vee];
+
+subgraph clusterNRP {
+
+	label="NRP";
+	fontsize=34;
+	fontcolor="white";
+	style="rounded";	
+	color=darkseagreen;
+	bgcolor=darkseagreen;
+	
+	node [color=darkseagreen];
+
+	TopNRP [label="" shape=box fixedwidth=true width=3.5 height=0 style=invis];
+	StandardDelivery [label="Deliver"];
+	NRP [label=NRP];
+	Delay [label="Grow baby\n(3-9 mo)" height=0.9];
+	VATS [label="Resect\n(VATS?)" style=filled fillcolor=white color=darkseagreen];
+	BottomNRP [label="" shape=point style=invis];
+	
+	TopNRP -> StandardDelivery [style=invis];
+	StandardDelivery -> NRP -> Delay -> VATS
+	VATS -> BottomNRP [style=invis];
+
+}
+
+subgraph clusterExterior {
+
+	label="Partial EXIT"
+	fontsize=34;
+	fontcolor="white";
+	style=rounded;
+	color= orange2;
+	bgcolor= orange2;
+
+	node [color=grey];
+
+	TopExt [label="" shape=point style=invis];
+
+	subgraph clusterMFB {
+	
+		label="MF Bypass";
+		fontsize=24;
+		color=orange2;
+		bgcolor=grey;
+
+		DeliverTop [label="Deliver Thorax"];
+		ETT [label="Intubate"];
+		Cut [label="Thoracotomy"];
+		PPV [label="PPV"];
+		OK [label="OK"];
+		Nope [label="Nope"];
+		DeliverTop -> ETT -> Cut -> PPV -> {Nope OK};
+
+	}
+
+	DeliverBottom [label="Deliver\n& Resect" style=filled fillcolor=white color=orange2];
+	BottomExt [label="" shape=point style=invis];
+	
+	TopExt -> DeliverTop [style=invis];
+	OK -> DeliverBottom;
+	DeliverBottom -> BottomExt [style=invis];
+	
+}
+
+subgraph clusterEXIT {
+
+	label="Full EXIT";
+	fontsize=34;
+	fontcolor="white";
+	style=rounded;
+	color=indianred;
+	bgcolor=indianred;
+
+	node [color=grey];
+	
+	TopEXIT [label="" shape=box fixedwidth=true width=3.5 height=0 style=invis];
+
+	subgraph clusterMFB2 {
+	
+		label="MF Bypass";
+		fontsize=24;
+		color=indianred;
+		bgcolor=grey;
+
+		DeliverTop2 [label="Deliver Thorax"];
+		Cut2 [label="Thoracotomy"];
+		ResectMFB [label="Resect"];
+		DeliverTop2 -> Cut2 -> ResectMFB[weight=100];
+
+	}
+
+	DeliverBottom2 [label="Deliver" style=filled fillcolor=white color=indianred];
+	BottomEXIT [label="" shape=point style=invis];
+	
+	TopEXIT -> DeliverTop2 [style=invis];
+	ResectMFB -> DeliverBottom2[weight=100];
+	DeliverBottom2 -> BottomEXIT [style=invis];
+
+}
+
+Nope -> ResectMFB;
+
+{ rank=same TopNRP TopExt TopEXIT }
+{ rank=same StandardDelivery DeliverTop DeliverTop2 }
+{ rank=same NRP Cut Cut2 }
+{ rank=same Delay OK Nope ResectMFB }
+{ rank=same VATS DeliverBottom DeliverBottom2 }
+{ rank=same BottomNRP BottomExt BottomEXIT }
+
+TopNRP -> TopExt -> TopEXIT [style=invis];
+
+}
