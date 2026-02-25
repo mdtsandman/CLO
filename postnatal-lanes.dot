@@ -10,21 +10,19 @@ edge [arrowhead=vee];
 
 subgraph clusterNRP {
 
-	label=<
-		<TABLE CELLPADDING="12"><TR><TD><B>NRP</B></TD></TR></TABLE>
-	>;
+	label=<<TABLE CELLPADDING="12"><TR><TD>NRP</TD></TR></TABLE>>;
 	fontsize=34;
 	fontcolor="white";
-	
+	style=rounded;
 	color=darkseagreen;
 	bgcolor=darkseagreen;
 	
-	TopNRP [label="", shape=point, style=invis];
+	TopNRP [label="" shape=point height=0 style=invis];
 	StandardDelivery [label="Deliver"];
 	NRP [label=<<B>NRP</B>>, width=1.2, fontsize=20, fontcolor="white"];
 	Delay [label="Grow baby\n(3-9 mo)" height=0.9];
 	VATS [label="Resection (VATS?)"];
-	BottomNRP [label="", shape=point, style=invis];
+	BottomNRP [label="" shape=point height=0 style=invis];
 	
 	TopNRP -> StandardDelivery[style=invis];
 	StandardDelivery -> NRP -> Delay -> VATS
@@ -34,22 +32,20 @@ subgraph clusterNRP {
 
 subgraph clusterHFJV {
 
-	label=<
-		<TABLE CELLPADDING="12"><TR><TD><B>HFJV</B></TD></TR></TABLE>
-	>;
+	label=<<TABLE CELLPADDING="12"><TR><TD>HFJV</TD></TR></TABLE>>;
 	fontsize=34;
 	fontcolor="white";
-
+	style=rounded;
 	color= orange2;
 	bgcolor= orange2;
 	
-	TopHFJV [label="", shape=point, style=invis];
+	TopHFJV [label="" shape=point height=0 style=invis];
 	Deliver [label="Deliver"];
 	FRC [label="Establish FRC"];
 	HFJV [label=<<B>HFJV</B>>, width=1.2, fontsize=20, fontcolor="white"];
 	Transition [label="Circulatory\nTransition\n(24-48 hrs)", height=1.3];
 	Resection [label="Resection"];
-	BottomHFJV [label="", shape=point, style=invis];
+	BottomHFJV [label="" shape=point height=0 style=invis];
 	
 	TopHFJV -> Deliver[style=invis];
 	Deliver -> FRC -> HFJV -> Transition -> Resection;
@@ -59,22 +55,20 @@ subgraph clusterHFJV {
 
 subgraph clusterEXIT {
 
-	label=<
-		<TABLE CELLPADDING="12"><TR><TD><B>EXIT</B></TD></TR></TABLE>
-	>;
+	label=<<TABLE CELLPADDING="12"><TR><TD>EXIT</TD></TR></TABLE>>;
 	fontsize=34;
 	fontcolor="white";
-	
+	style=rounded;
 	color=indianred;
 	bgcolor=indianred;
 
-	TopEXIT [label="", shape=point, style=invis];
+	TopEXIT [label="" shape=point height=0 style=invis];
 	EXIT [label="EXIT to ECLS"];
 	ECMO [label=<<B>ECLS</B>>, width=1.2, fontsize=20, fontcolor=white];
 	Thoracotomy [label="Resection"];
 	Grow [label="Grow lung"];
 	Wean [label="Wean from\nECLS"];
-	BottomEXIT [label="", shape=point, style=invis];
+	BottomEXIT [label="" shape=point height=0 style=invis];
 
 	TopEXIT -> EXIT[style=invis];
 	EXIT -> ECMO -> Thoracotomy -> Grow -> Wean;
