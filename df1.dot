@@ -11,13 +11,13 @@ edge [arrowhead=vee color=white];
 
 PHP [label="Pulmonary\nHypoplasia" fillcolor=orange2 color=grey];
 
-MaybeCLE [label="Potential\nCLE" fillcolor=orange2 color=grey];
-Fear [label="Fear\nof PPV"];
-OR [label="OR during\nTransition"];
-CLE [label="Actual\nCLE"];
-FRC [label="Low\nFRC"];
-Catalyst [label="Gas on\nthe Fire" fontcolor=white fillcolor=red color=grey];
-Loop [label="Feedback\nLoop" fontcolor=white fillcolor=red color=grey];
+MaybeCLE [label="Potential\nCLE" fillcolor=orange2 color=grey style=invis];
+Fear [label="Fear\nof PPV" style=invis];
+OR [label="OR during\nTransition" style=invis];
+CLE [label="Actual\nCLE" style=invis];
+FRC [label="Low\nFRC" style=invis];
+Catalyst [label="Gas on\nthe Fire" fontcolor=white fillcolor=red color=grey style=invis];
+Loop [label="Feedback\nLoop" fontcolor=white fillcolor=red color=grey style=invis];
 
 Death [label="Death" style=filled fillcolor=black color=grey fontcolor=white];
 
@@ -66,12 +66,12 @@ subgraph ClusterFuck {
 
 PHP -> PHTN;
 
-MaybeCLE -> OR -> Catalyst -> PHTN;
-MaybeCLE -> {Fear CLE};
-CLE -> Catalyst;
-Fear -> FRC -> Catalyst;
+MaybeCLE -> OR -> Catalyst -> PHTN [style=invis];
+MaybeCLE -> {Fear CLE} [style=invis];
+CLE -> Catalyst [style=invis];
+Fear -> FRC -> Catalyst [style=invis];
 
-Badness -> Loop -> PHTN;
+Badness -> Loop -> PHTN [style=invis];
 
 Badness -> Death;
 
